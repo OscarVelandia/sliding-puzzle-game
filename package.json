@@ -4,7 +4,7 @@
   "description": "Puzzle game for MediaMonks",
   "scripts": {
     "start": "NODE_ENV=development parcel src/pages/GameBoard.html --open",
-    "build": "NODE_ENV=production parcel build src/pages/GameBoard.html -d build -o index.html --public-url ./",
+    "build": "NODE_ENV=production parcel build src/pages/GameBoard.html -o index.html",
     "clear-build-cache": "rm -rf dist/ .cache/"
   },
   "author": "Oscar Velandia",
