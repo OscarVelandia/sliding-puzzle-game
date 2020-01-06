@@ -56,6 +56,8 @@ const GameBoard = (): void => {
 
     if (gameWasWon) {
       showElement('reset');
+      clearInterval(gameTimeInterval);
+      counter = 0;
     }
   }
 
