@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="../assets/reset.css" />
+    <link rel="stylesheet" href="./GameBoard.css" />
+    <script src="./GameBoard.ts" defer></script>
+    <title>Puzzle game for MediaMonks</title>
+  </head>
+  <body>
+    <div id="root">
+      <main id="game-board">
+        <button id="reset">
+          Volver a iniciar
+        </button>
+      </main>
+      <aside>
+        <h3>Time: <span id="elapsed-time"></span></h3>
+        <h3>Moves: <span id="moves">0</span></h3>
+        <button id="restart-game">
+          Restart game
+        </button>
+      </aside>
+    </div>
+  </body>
+</html>

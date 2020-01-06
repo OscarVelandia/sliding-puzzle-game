@@ -1,0 +1,36 @@
+{
+  "name": "sliding-puzzle-game",
+  "version": "1.0.0",
+  "description": "Puzzle game for MediaMonks",
+  "scripts": {
+    "start": "parcel src/pages/GameBoard.html --open",
+    "build": "parcel build src/pages/GameBoard.html -d build --public-url ./",
+    "clear-build-cache": "rm -rf dist/ .cache/"
+  },
+  "author": "Oscar Velandia",
+  "repository": {
+    "type": "git",
+    "utl": "https://github.com/OscarVelandia/sliding-puzzle-game"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.19.1",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.4"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semicolons": true,
+    "proseWrap": "always",
+    "trailingComma": "all",
+    "quoteProps": "consistent",
+    "printWidth": 80,
+    "tabWidth": 2
+  }
+}
