@@ -15,11 +15,11 @@ const GameBoard = (): void => {
   const width = 4;
   const height = 4;
   const puzzleSlots = createSlidingPuzzleSlots(width, height);
+  let imageAndIDSlots: PairIDAndUrl[];
+  let shuffledBoardSlotsWithEmptySlot: PairIDAndUrlWithEmptySlot[];
   let gameTimeInterval: number;
   let counter = 0;
   let moves = 0;
-  let shuffledBoardSlotsWithEmptySlot: PairImageAndUrlWithEmptySlot[];
-  let originalBoardSlots: PairImageAndUrl[];
 
   shuffleImagesAndCreateSlotsArray(puzzleSlots);
   setListeners();
@@ -50,7 +50,7 @@ const GameBoard = (): void => {
 
   function checkIfGameWasWon() {
     const gameWasWon = compareArraysEquality(
-      originalBoardSlots,
+      imageAndIDSlots,
       shuffledBoardSlotsWithEmptySlot,
     );
 
@@ -86,7 +86,7 @@ const GameBoard = (): void => {
     temp?.parentNode?.removeChild(temp);
   }
 
-  function addSlots(imagesWithIds: PairImageAndUrl[]): void {
+  function addSlots(imagesWithIds: PairIDAndUrl[]): void {
     const gameBoard = document.getElementById('game-board') as HTMLDivElement;
     const emptySlot = document.createElement('div') as HTMLDivElement;
     emptySlot.id = 'empty-slot';
@@ -99,11 +99,11 @@ const GameBoard = (): void => {
 
   function addImageSlots(
     gameBoard: HTMLDivElement,
-    imagesWithIds: PairImageAndUrl[],
+    imagesWithIds: PairIDAndUrl[],
   ) {
     imagesWithIds.forEach((pair): void => {
-      const [id, imgUrl]: PairImageAndUrl = pair;
-      const imageIdInOriginalOrder = originalBoardSlots.findIndex(slot =>
+      const [id, imgUrl]: PairIDAndUrl = pair;
+      const imageIdInOriginalOrder = imageAndIDSlots.findIndex(slot =>
         findArrayIndexById(slot[0], id),
       );
       const puzzleSlotsWithImages = createHTMLImageElement(
@@ -118,10 +118,10 @@ const GameBoard = (): void => {
   }
 
   function shuffleImagesAndCreateSlotsArray(slots: string[]) {
-    originalBoardSlots = [...slots].map((id, index): [string, string] => {
+    imageAndIDSlots = [...slots].map((id, index): [string, string] => {
       return [id, puzzleImageRoutes[index]];
     });
-    const shuffledSlotsImages = [...originalBoardSlots].sort(shuffleItems);
+    const shuffledSlotsImages = [...imageAndIDSlots].sort(shuffleItems);
 
     shuffledBoardSlotsWithEmptySlot = [
       ...shuffledSlotsImages,

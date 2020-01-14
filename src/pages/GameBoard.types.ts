@@ -2,6 +2,6 @@ type ID = string;
 
 type ImageURL = string;
 
-type PairImageAndUrl = [ID, ImageURL];
+type PairIDAndUrl = [ID, ImageURL];
 
-type PairImageAndUrlWithEmptySlot = [ID, ImageURL?];
+type PairIDAndUrlWithEmptySlot = [ID, ImageURL | undefined];
