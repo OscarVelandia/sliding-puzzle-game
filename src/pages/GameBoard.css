@@ -1,27 +1,28 @@
 #root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2rem auto;
+  width: 60%;
+  height: 80vh;
 }
 
 #game-board {
   background-image: linear-gradient(
-      rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0.6)
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
     ),
     url('../assets/img/monks.jpg');
   position: relative;
 }
 
-main {
+#game-board {
   display: grid;
   grid-template-areas: '1 2 3 4';
+  grid-gap: 0.2rem;
   border: 1rem dashed peru;
 }
 
-main > .piece {
+#game-board > .piece {
   border: 2px solid rgba(202, 177, 152, 0.842);
   width: 3em;
   height: 3em;
@@ -50,11 +51,11 @@ aside {
   flex-direction: column;
   border: 20px dashed peru;
   border-left: 0;
-  width: 20%;
-  height: 80.6%;
+  min-width: 10rem;
+  max-width: 15rem;
 }
 
-aside > button {
+#restart-game {
   margin-top: 3rem;
   border-radius: 15%;
   font-size: 1.1rem;
@@ -74,4 +75,26 @@ aside > button {
   padding: 12px;
   background-color: rgba(241, 130, 20, 0.87);
   color: white;
+}
+
+@media (max-width: 812px) {
+  #root {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 60vw;
+  }
+
+  aside {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    min-width: none;
+    max-width: none;
+    border: 20px dashed peru;
+    padding: 1rem;
+  }
+
+  #restart-game {
+    margin-top: 0;
+  }
 }
