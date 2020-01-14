@@ -68,8 +68,8 @@ export const createHTMLImageElement = (
 };
 
 export const compareArraysEquality = (
-  originalBoard: PairImageAndUrl[],
-  modifiedBoard: PairImageAndUrlWithEmptySlot[],
+  originalBoard: PairIDAndUrl[],
+  modifiedBoard: PairIDAndUrlWithEmptySlot[],
 ) => {
   return originalBoard.every((item, idx) => item === modifiedBoard[idx]);
 };
