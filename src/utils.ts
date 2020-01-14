@@ -50,7 +50,7 @@ export const uniqueId = () => {
   );
 };
 
-export const createImage = (
+export const createHTMLImageElement = (
   imgSrc: ImageURL,
   id: ID,
   alt: string,

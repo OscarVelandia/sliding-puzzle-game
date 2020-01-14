@@ -1,7 +1,7 @@
 import { onClickSetNewGame, onClickRestartGame } from './GameBoard.events';
 import {
   compareArraysEquality,
-  createImage,
+  createHTMLImageElement,
   hideElement,
   puzzleImageRoutes,
   showElement,
@@ -106,7 +106,7 @@ const GameBoard = (): void => {
       const imageIdInOriginalOrder = originalBoardSlots.findIndex(slot =>
         findArrayIndexById(slot[0], id),
       );
-      const puzzleSlotsWithImages = createImage(
+      const puzzleSlotsWithImages = createHTMLImageElement(
         imgUrl,
         id,
         `piece no. ${imageIdInOriginalOrder + 1}`,
