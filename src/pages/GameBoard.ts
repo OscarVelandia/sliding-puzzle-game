@@ -34,8 +34,12 @@ const GameBoard = (): void => {
         return slotUrl === undefined;
       },
     );
-
     const pieceCanBeMoved = getMovementDisponibility(clickedSlot, emptySlot);
+    const isFirstMove = pieceCanBeMoved && counter === 0;
+
+    if (isFirstMove) {
+      setCounterInterval();
+    }
 
     if (pieceCanBeMoved) {
       const [selectedSlotId] = shuffledBoardSlotsWithEmptySlot[clickedSlot];
@@ -77,7 +81,7 @@ const GameBoard = (): void => {
     ) as HTMLImageElement;
     const emptySlot = document.getElementById(emptySlotId) as HTMLDivElement;
 
-    // create marker element and insert it where obj1 is
+    // create marker element and insert it where selectedSlot is
     const temp = document.createElement('div');
 
     selectedSlot?.parentNode?.insertBefore(temp, selectedSlot);
@@ -94,7 +98,7 @@ const GameBoard = (): void => {
     addImageSlots(gameBoard, imagesWithIds);
 
     gameBoard.appendChild(emptySlot);
-    gameTimeInterval = window.setInterval(setElapsedTime, 1000);
+    insertCounterInHTML();
   }
 
   function addImageSlots(
@@ -166,12 +170,20 @@ const GameBoard = (): void => {
   }
 
   function setElapsedTime() {
+    insertCounterInHTML();
+    counter += 1;
+  }
+
+  function insertCounterInHTML() {
     const elapsedTimeEl = document.getElementById(
       'elapsed-time',
     ) as HTMLSpanElement;
 
     elapsedTimeEl.innerHTML = String(counter);
-    counter += 1;
+  }
+
+  function setCounterInterval() {
+    gameTimeInterval = window.setInterval(setElapsedTime, 1000);
   }
 
   function updateMoves(resetMoves: boolean) {
@@ -183,6 +195,7 @@ const GameBoard = (): void => {
   function setListeners() {
     onClickRestartGame(() => {
       setNewGame();
+      insertCounterInHTML();
     });
 
     onClickSetNewGame(() => {
