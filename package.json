@@ -34,7 +34,7 @@
     "proseWrap": "always",
     "trailingComma": "all",
     "quoteProps": "consistent",
-    "printWidth": 80,
+    "printWidth": 100,
     "tabWidth": 2
   }
 }
