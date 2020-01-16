@@ -34,14 +34,6 @@ export const removeElementsFromDOM = (elementClassOrId: string): void => {
   document.querySelectorAll(elementClassOrId).forEach(el => el.remove());
 };
 
-export const shuffleItems = () => {
-  return Math.random() - 0.5;
-};
-
-export const findArrayIndexById = (slotId: string, clickedSlotId: string) => {
-  return slotId === clickedSlotId;
-};
-
 export const uniqueId = () => {
   return (
     Math.random()
@@ -74,10 +66,7 @@ export const compareArraysEquality = (
   return originalBoard.every((item, idx) => item === modifiedBoard[idx]);
 };
 
-export const createSlidingPuzzleSlots = (
-  width: number,
-  height: number,
-): ID[] => {
+export const createSlidingPuzzleSlots = (width: number, height: number): ID[] => {
   return [
     ...Array(width * height - 1)
       .fill(0)

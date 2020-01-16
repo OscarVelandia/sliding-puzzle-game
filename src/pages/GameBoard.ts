@@ -5,9 +5,7 @@ import {
   hideElement,
   puzzleImageRoutes,
   showElement,
-  shuffleItems,
   createSlidingPuzzleSlots,
-  findArrayIndexById,
   removeElementsFromDOM,
 } from '../utils';
 
@@ -26,14 +24,12 @@ const GameBoard = (): void => {
 
   function movePiece(evt: Event) {
     const { target } = evt as HTMLElementEvent<HTMLImageElement>;
-    const clickedSlot = shuffledBoardSlotsWithEmptySlot.findIndex(slots =>
-      findArrayIndexById(slots[0], target.id),
+    const clickedSlot = shuffledBoardSlotsWithEmptySlot.findIndex(
+      slotsID => slotsID[0] === target.id,
     );
-    const emptySlot = shuffledBoardSlotsWithEmptySlot.findIndex(
-      ([, slotUrl]) => {
-        return slotUrl === undefined;
-      },
-    );
+    const emptySlot = shuffledBoardSlotsWithEmptySlot.findIndex(([, slotUrl]) => {
+      return slotUrl === undefined;
+    });
     const pieceCanBeMoved = getMovementDisponibility(clickedSlot, emptySlot);
     const isFirstMove = pieceCanBeMoved && counter === 0;
 
@@ -53,10 +49,7 @@ const GameBoard = (): void => {
   }
 
   function checkIfGameWasWon() {
-    const gameWasWon = compareArraysEquality(
-      imageAndIDSlots,
-      shuffledBoardSlotsWithEmptySlot,
-    );
+    const gameWasWon = compareArraysEquality(imageAndIDSlots, shuffledBoardSlotsWithEmptySlot);
 
     if (gameWasWon) {
       showElement('reset');
@@ -66,19 +59,14 @@ const GameBoard = (): void => {
   }
 
   function swapclickedItemInSlotsArray(clickedSlot: number, emptySlot: number) {
-    [
-      shuffledBoardSlotsWithEmptySlot[clickedSlot],
-      shuffledBoardSlotsWithEmptySlot[emptySlot],
-    ] = [
+    [shuffledBoardSlotsWithEmptySlot[clickedSlot], shuffledBoardSlotsWithEmptySlot[emptySlot]] = [
       shuffledBoardSlotsWithEmptySlot[emptySlot],
       shuffledBoardSlotsWithEmptySlot[clickedSlot],
     ];
   }
 
   function swapHTMLElements(selectedSlotId: string, emptySlotId: string) {
-    const selectedSlot = document.getElementById(
-      selectedSlotId,
-    ) as HTMLImageElement;
+    const selectedSlot = document.getElementById(selectedSlotId) as HTMLImageElement;
     const emptySlot = document.getElementById(emptySlotId) as HTMLDivElement;
 
     // create marker element and insert it where selectedSlot is
@@ -101,18 +89,15 @@ const GameBoard = (): void => {
     insertCounterInHTML();
   }
 
-  function addImageSlots(
-    gameBoard: HTMLDivElement,
-    imagesWithIds: PairIDAndUrl[],
-  ) {
+  function addImageSlots(gameBoard: HTMLDivElement, imagesWithIds: PairIDAndUrl[]) {
     imagesWithIds.forEach((pair): void => {
-      const [id, imgUrl]: PairIDAndUrl = pair;
-      const imageIdInOriginalOrder = imageAndIDSlots.findIndex(slot =>
-        findArrayIndexById(slot[0], id),
+      const [clickedSlotID, imgUrl]: PairIDAndUrl = pair;
+      const imageIdInOriginalOrder = imageAndIDSlots.findIndex(
+        slotID => slotID[0] === clickedSlotID,
       );
       const puzzleSlotsWithImages = createHTMLImageElement(
         imgUrl,
-        id,
+        clickedSlotID,
         `piece no. ${imageIdInOriginalOrder + 1}`,
         'piece',
         movePiece,
@@ -125,20 +110,14 @@ const GameBoard = (): void => {
     imageAndIDSlots = [...slots].map((id, index): [string, string] => {
       return [id, puzzleImageRoutes[index]];
     });
-    const shuffledSlotsImages = [...imageAndIDSlots].sort(shuffleItems);
+    const shuffledSlotsImages = [...imageAndIDSlots].sort(() => Math.random() - 0.5);
 
-    shuffledBoardSlotsWithEmptySlot = [
-      ...shuffledSlotsImages,
-      ['empty-slot', undefined],
-    ];
+    shuffledBoardSlotsWithEmptySlot = [...shuffledSlotsImages, ['empty-slot', undefined]];
 
     addSlots(shuffledSlotsImages);
   }
 
-  function getMovementDisponibility(
-    clickedSlot: number,
-    emptySlot: number,
-  ): boolean {
+  function getMovementDisponibility(clickedSlot: number, emptySlot: number): boolean {
     const canMoveUp = emptySlot - clickedSlot === -width;
     const canMoveDown = emptySlot - clickedSlot === width;
     const canMoveRight = emptySlot - clickedSlot === 1;
@@ -175,9 +154,7 @@ const GameBoard = (): void => {
   }
 
   function insertCounterInHTML() {
-    const elapsedTimeEl = document.getElementById(
-      'elapsed-time',
-    ) as HTMLSpanElement;
+    const elapsedTimeEl = document.getElementById('elapsed-time') as HTMLSpanElement;
 
     elapsedTimeEl.innerHTML = String(counter);
   }
