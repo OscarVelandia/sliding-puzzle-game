@@ -9,7 +9,7 @@ import {
   removeElementsFromDOM,
 } from '../utils';
 
-const GameBoard = (): void => {
+const GameBoard = () => {
   const width = 4;
   const height = 4;
   const puzzleSlots = createSlidingPuzzleSlots(width, height);
@@ -122,20 +122,12 @@ const GameBoard = (): void => {
     const canMoveDown = emptySlot - clickedSlot === width;
     const canMoveRight = emptySlot - clickedSlot === 1;
     const canMoveLeft = emptySlot - clickedSlot === -1;
+    const canMoveInAnyDirection = canMoveUp || canMoveDown || canMoveRight || canMoveLeft;
+    const canMoveInFirstThreeSlots =
+      clickedSlot <= 3 && (canMoveDown || canMoveRight || canMoveLeft);
+    const canMoveInLastFourSlots = clickedSlot >= 12 && (canMoveUp || canMoveRight || canMoveLeft);
 
-    if (clickedSlot <= 3 && (canMoveDown || canMoveRight || canMoveLeft)) {
-      return true;
-    }
-
-    if (clickedSlot >= 12 && (canMoveUp || canMoveRight || canMoveLeft)) {
-      return true;
-    }
-
-    if (canMoveUp || canMoveDown || canMoveRight || canMoveLeft) {
-      return true;
-    }
-
-    return false;
+    return canMoveInFirstThreeSlots || canMoveInLastFourSlots || canMoveInAnyDirection;
   }
 
   function setNewGame() {
