@@ -5,10 +5,7 @@
 }
 
 #game-board {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
     url('../assets/img/monks.jpg');
   position: relative;
 }
@@ -28,6 +25,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.reset-button {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10%;
+  font-size: 1.4rem;
+  padding: 12px;
+  background-color: rgba(241, 130, 20, 0.87);
+  color: white;
+}
+
+.show-element {
+  display: block;
 }
 
 @keyframes hover-animation {
@@ -53,23 +67,10 @@ aside {
   max-width: 15rem;
 }
 
-#restart-game {
+.restart-button {
   margin-top: 3rem;
   border-radius: 15%;
   font-size: 1.1rem;
-  padding: 12px;
-  background-color: rgba(241, 130, 20, 0.87);
-  color: white;
-}
-
-#reset {
-  display: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 10%;
-  font-size: 1.4rem;
   padding: 12px;
   background-color: rgba(241, 130, 20, 0.87);
   color: white;
@@ -91,7 +92,7 @@ aside {
     padding: 1rem;
   }
 
-  #restart-game {
+  .restart-button {
     margin-top: 0;
   }
 }

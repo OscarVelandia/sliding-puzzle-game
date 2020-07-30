@@ -1,18 +1,21 @@
-import { onClickSetNewGame, onClickRestartGame } from './GameBoard.events';
 import {
   compareArraysEquality,
   createHTMLImageElement,
-  hideElement,
   puzzleImageRoutes,
-  showElement,
-  createSlidingPuzzleSlots,
+  createSlots,
   removeElementsFromDOM,
 } from '../utils';
 
-const GameBoard = () => {
-  const width = 4;
-  const height = 4;
-  const puzzleSlots = createSlidingPuzzleSlots(width, height);
+enum Size {
+  width = 4,
+  height = 4,
+}
+
+const Gameboard = () => {
+  const puzzleSlots = createSlots(Size.width, Size.height);
+  const resetButton = document.querySelector('[data-ref="reset"]');
+  const restartButton = document.querySelector('[data-ref="restart"]');
+
   let imageAndIDSlots: PairIDAndUrl[];
   let shuffledBoardSlotsWithEmptySlot: PairIDAndUrlWithEmptySlot[];
   let gameTimeInterval: number;
@@ -25,7 +28,7 @@ const GameBoard = () => {
   function movePiece(evt: Event) {
     const { target } = evt as HTMLElementEvent<HTMLImageElement>;
     const clickedSlot = shuffledBoardSlotsWithEmptySlot.findIndex(
-      slotsID => slotsID[0] === target.id,
+      (slotsID) => slotsID[0] === target.id,
     );
     const emptySlot = shuffledBoardSlotsWithEmptySlot.findIndex(([, slotUrl]) => {
       return slotUrl === undefined;
@@ -33,15 +36,13 @@ const GameBoard = () => {
     const pieceCanBeMoved = getMovementDisponibility(clickedSlot, emptySlot);
     const isFirstMove = pieceCanBeMoved && counter === 0;
 
-    if (isFirstMove) {
-      setCounterInterval();
-    }
+    if (isFirstMove) setCounterInterval();
 
     if (pieceCanBeMoved) {
       const [selectedSlotId] = shuffledBoardSlotsWithEmptySlot[clickedSlot];
       const [emptySlotId] = shuffledBoardSlotsWithEmptySlot[emptySlot];
 
-      swapclickedItemInSlotsArray(clickedSlot, emptySlot);
+      swapClickedItemInSlotsArray(clickedSlot, emptySlot);
       swapHTMLElements(selectedSlotId, emptySlotId);
       checkIfGameWasWon();
       updateMoves(false);
@@ -49,16 +50,16 @@ const GameBoard = () => {
   }
 
   function checkIfGameWasWon() {
-    const gameWasWon = compareArraysEquality(imageAndIDSlots, shuffledBoardSlotsWithEmptySlot);
+    const hasGameWon = compareArraysEquality(imageAndIDSlots, shuffledBoardSlotsWithEmptySlot);
 
-    if (gameWasWon) {
-      showElement('reset');
+    if (hasGameWon) {
+      resetButton?.classList.add('show-element');
       clearInterval(gameTimeInterval);
       counter = 0;
     }
   }
 
-  function swapclickedItemInSlotsArray(clickedSlot: number, emptySlot: number) {
+  function swapClickedItemInSlotsArray(clickedSlot: number, emptySlot: number) {
     [shuffledBoardSlotsWithEmptySlot[clickedSlot], shuffledBoardSlotsWithEmptySlot[emptySlot]] = [
       shuffledBoardSlotsWithEmptySlot[emptySlot],
       shuffledBoardSlotsWithEmptySlot[clickedSlot],
@@ -69,7 +70,7 @@ const GameBoard = () => {
     const selectedSlot = document.getElementById(selectedSlotId) as HTMLImageElement;
     const emptySlot = document.getElementById(emptySlotId) as HTMLDivElement;
 
-    // create marker element and insert it where selectedSlot is
+    // create marker element and insert it where is positioned selectedSlot
     const temp = document.createElement('div');
 
     selectedSlot?.parentNode?.insertBefore(temp, selectedSlot);
@@ -93,7 +94,7 @@ const GameBoard = () => {
     imagesWithIds.forEach((pair): void => {
       const [clickedSlotID, imgUrl]: PairIDAndUrl = pair;
       const imageIdInOriginalOrder = imageAndIDSlots.findIndex(
-        slotID => slotID[0] === clickedSlotID,
+        ([slotID]) => slotID === clickedSlotID,
       );
       const puzzleSlotsWithImages = createHTMLImageElement(
         imgUrl,
@@ -102,6 +103,7 @@ const GameBoard = () => {
         'piece',
         movePiece,
       );
+
       gameBoard.appendChild(puzzleSlotsWithImages);
     });
   }
@@ -118,8 +120,8 @@ const GameBoard = () => {
   }
 
   function getMovementDisponibility(clickedSlot: number, emptySlot: number): boolean {
-    const canMoveUp = emptySlot - clickedSlot === -width;
-    const canMoveDown = emptySlot - clickedSlot === width;
+    const canMoveUp = emptySlot - clickedSlot === -Size.width;
+    const canMoveDown = emptySlot - clickedSlot === Size.width;
     const canMoveRight = emptySlot - clickedSlot === 1;
     const canMoveLeft = emptySlot - clickedSlot === -1;
     const canMoveInAnyDirection = canMoveUp || canMoveDown || canMoveRight || canMoveLeft;
@@ -131,12 +133,13 @@ const GameBoard = () => {
   }
 
   function setNewGame() {
+    counter = 0;
+
     removeElementsFromDOM('.piece');
     removeElementsFromDOM('#empty-slot');
     shuffleImagesAndCreateSlotsArray(puzzleSlots);
-    hideElement('reset');
+    resetButton?.classList.remove('show-element');
     clearInterval(gameTimeInterval);
-    counter = 0;
     updateMoves(true);
   }
 
@@ -148,7 +151,7 @@ const GameBoard = () => {
   function insertCounterInHTML() {
     const elapsedTimeEl = document.getElementById('elapsed-time') as HTMLSpanElement;
 
-    elapsedTimeEl.innerHTML = String(counter);
+    elapsedTimeEl.innerText = String(counter);
   }
 
   function setCounterInterval() {
@@ -157,20 +160,18 @@ const GameBoard = () => {
 
   function updateMoves(resetMoves: boolean) {
     const movesEl = document.getElementById('moves') as HTMLSpanElement;
+
     moves = resetMoves ? 0 : (moves += 1);
-    movesEl.innerHTML = String(moves);
+    movesEl.innerText = String(moves);
   }
 
   function setListeners() {
-    onClickRestartGame(() => {
+    resetButton?.addEventListener('click', setNewGame);
+    restartButton?.addEventListener('click', () => {
       setNewGame();
       insertCounterInHTML();
-    });
-
-    onClickSetNewGame(() => {
-      setNewGame();
     });
   }
 };
 
-GameBoard();
+Gameboard();

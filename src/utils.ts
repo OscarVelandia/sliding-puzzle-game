@@ -14,41 +14,21 @@ import part13 from './assets/img/row-4-col-1.jpg';
 import part14 from './assets/img/row-4-col-2.jpg';
 import part15 from './assets/img/row-4-col-3.jpg';
 
-export const showElement = (elementId: string) => {
-  const element = document.getElementById(elementId);
-
-  if (element !== null) {
-    element.style.display = 'block';
-  }
-};
-
-export const hideElement = (elementId: string) => {
-  const element = document.getElementById(elementId);
-
-  if (element !== null) {
-    element.style.display = 'none';
-  }
-};
-
 export const removeElementsFromDOM = (elementClassOrId: string): void => {
-  document.querySelectorAll(elementClassOrId).forEach(el => el.remove());
+  document.querySelectorAll(elementClassOrId).forEach((element) => element.remove());
 };
 
-export const uniqueId = () => {
-  return (
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36)
-  );
+export const uniqueId = (): string => {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
 };
 
 export const createHTMLImageElement = (
   imgSrc: ImageURL,
-  id: ID,
+  id: Id,
   alt: string,
   className: string,
   onClick: HTMLElementClickMethod,
-) => {
+): HTMLImageElement => {
   const img = new Image();
   img.src = imgSrc;
   img.alt = alt;
@@ -56,23 +36,24 @@ export const createHTMLImageElement = (
   img.id = id;
   img.className = className;
   img.onclick = onClick;
+
   return img;
 };
 
 export const compareArraysEquality = (
   originalBoard: PairIDAndUrl[],
   modifiedBoard: PairIDAndUrlWithEmptySlot[],
-) => {
-  return originalBoard.every((item, idx) => item === modifiedBoard[idx]);
+): boolean => {
+  return originalBoard.every((item, index) => item === modifiedBoard[index]);
 };
 
-export const createSlidingPuzzleSlots = (width: number, height: number): ID[] => {
-  return [
-    ...Array(width * height - 1)
+export const createSlots = (width: number, height: number): Id[] => {
+  return (
+    Array(width * height - 1)
       .fill(0)
-      // eslint-disable-next-line no-unused-vars
-      .map(_ => uniqueId()),
-  ];
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .map((_) => uniqueId())
+  );
 };
 
 export const puzzleImageRoutes: string[] = [

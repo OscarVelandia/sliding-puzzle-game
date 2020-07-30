@@ -1,7 +1,4 @@
-type ID = string;
-
+type Id = string;
 type ImageURL = string;
-
-type PairIDAndUrl = [ID, ImageURL];
-
-type PairIDAndUrlWithEmptySlot = [ID, ImageURL | undefined];
+type PairIDAndUrl = [Id, ImageURL];
+type PairIDAndUrlWithEmptySlot = [Id, ImageURL | undefined];

@@ -4,6 +4,6 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
 };
 
-type HTMLElementClickMethod = (ev: MouseEvent) => void;
+type HTMLElementClickMethod = (event: Event) => void;
 
 type EventListenerOnClickMethod = () => void;
